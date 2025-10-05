@@ -1,0 +1,9 @@
+@charset "UTF-8";
+.listaderecetas{
+	display: flex;
+	justify-content: center;
+}
+.receta-info{
+	display: flex;
+	flex-direction: column;
+}
