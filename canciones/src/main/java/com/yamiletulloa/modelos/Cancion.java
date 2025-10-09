@@ -7,9 +7,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name= "canciones")
@@ -19,14 +22,16 @@ public class Cancion {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
 	
+	@Size(min = 5, message = "El título debe tener al menos 5 caracteres.")
 	private String titulo;
 	
+	@Size( min = 3, message= "El artiste debe tener al menos 3 caracteres.")
 	private String artista;
 	
-	private String autor;
-	
+	@Size(min = 3, message = "El género debe tener al menos 3 caracteres.")
 	private String genero;
 	
+	@Size(min = 3, message = "El idioma debe tener al menos 3 caracteres.")
 	private String idioma;
 	
 	@Temporal(TemporalType.TIME)
@@ -61,14 +66,6 @@ public class Cancion {
 		this.artista = artista;
 	}
 
-	public String getAutor() {
-		return autor;
-	}
-
-	public void setAutor(String autor) {
-		this.autor = autor;
-	}
-
 	public String getGenero() {
 		return genero;
 	}
@@ -100,5 +97,14 @@ public class Cancion {
 	public void setFechaActualizacion(Date fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
-
+	
+	@PrePersist
+	protected void onCreate() {
+		this.fechaCreacion = new Date();
+		this.fechaActualizacion = new Date();
+	}
+	@PreUpdate
+	protected void onUpdate() {
+		this.fechaActualizacion = new Date();
+	}
 }
